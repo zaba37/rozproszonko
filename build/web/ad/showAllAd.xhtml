@@ -1,0 +1,52 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="title">
+        All ad
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:panel header="Wszystkie ogłoszenia">
+                <c:if test="${empty sessionScope.login}">
+                    <p:dataGrid var="ad" value="#{adController.allAd}" columns="1"
+                                rows="6" paginator="true" id="adminmesangess"
+                                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                rowsPerPageTemplate="6,12,16">
+                        <p:panel header="#{ad.title}" style="text-align:center">
+                            <h:panelGrid columns="1" style="width:100%">
+
+                                <h:outputText value="#{ad.descryption}" />
+                                <h:outputText value="Liczba odwiedzin: #{ad.visit}" />
+                                <p:button value="Show ad" outcome="/ad/showDetailAd">
+                                    <f:param name="auctinId" value="#{ad.id}" />
+                                </p:button>
+                            </h:panelGrid>
+                        </p:panel>         
+                    </p:dataGrid>
+                </c:if>
+                <c:if test="${not empty sessionScope.login}">
+                    <p:dataGrid var="ad" value="#{adController.allAd}" columns="1"
+                                rows="#{pageSize}" paginator="true" id="adminmesangess"
+                                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                rowsPerPageTemplate="#{pageSize},12,16">
+                        <p:panel header="#{ad.title}" style="text-align:center">
+                            <h:panelGrid columns="1" style="width:100%">
+
+                                <h:outputText value="#{ad.descryption}" />
+                                <h:outputText value="Liczba odwiedzin: #{ad.visit}" />
+                                <p:button value="Show ad" outcome="/ad/showDetailAd">
+                                    <f:param name="auctinId" value="#{ad.id}" />
+                                </p:button>
+                            </h:panelGrid>
+                        </p:panel>         
+                    </p:dataGrid>
+                </c:if>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,28 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+        Create Admin Mesange
+    </ui:define>
+    <ui:define name="content">
+        <h:form enctype="multipart/form-data">
+            <p:panel header="Utwórz wiadomość">
+                <p:messages />
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputText value="Title " />
+                    <p:inputText value="#{adminMSGController.title}" required="true"/>
+
+                    <h:outputText value="Treść: " />
+                    <p:inputTextarea rows="10" cols="50" value="#{adminMSGController.dsc}" queryDelay="750" minQueryLength="4" required="true"/>
+                    
+                </h:panelGrid>
+
+                <p:commandButton value="Utwórz" ajax="false" icon="ui-icon-check" validateClient="true" action="#{adminMSGController.createAdminMSG}" resetValues="true"  />                   
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

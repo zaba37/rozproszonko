@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title><ui:insert name="title">Portal aukcyjny</ui:insert></title>
+    </h:head>
+    <h:body>
+        <h:outputStylesheet library="css" name="layout.css" />
+
+        <!--
+         See how to create/change the layout in http://www.primefaces.org/showcase/ui/panel/layout/element.xhtml
+         We're using "Full": http://www.primefaces.org/showcase/ui/panel/layout/full.xhtml
+        -->
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="80" resizable="true" closable="true" collapsible="true">
+                <ui:include src="header.xhtml" />
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south"  size="50" resizable="true" closable="true" collapsible="true">
+                <h:outputText style="text-align: right" value="Created 2015." />
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="180" resizable="true" closable="true" collapsible="true">
+                <h:form>
+                    <h:outputText>Theme</h:outputText>
+<!--                    <p:themeSwitcher id="basic" style="width:165px" value="#{themeSwitcherView.current}">
+                       <f:selectItems value="#{themeSwitcherView.themes}" itemLabel="" itemValue=""/>
+                       <f:ajax listener="#{themeSwitcherView.saveTheme}" />
+                   </p:themeSwitcher>-->
+                    <p:commandButton value="Light" ajax="false" icon="ui-icon-extlink" action="#{themeSwitcherView.chanegeCupertino}" resetValues="true"/>
+
+                    <p:commandButton value="Dark" ajax="false" icon="ui-icon-extlink" action="#{themeSwitcherView.changeDark}" resetValues="true"/>
+
+                </h:form>
+                <h:form>
+                    <p:separator/>
+                    <h:outputText>Wyszukaj</h:outputText>
+                    <p:inputText style="margin-right:10px; width: 150px" placeholder="Search" value="#{adController.searchString}"/>
+                    <p:selectOneRadio id="console" value="#{adController.searchValue}" layout="pageDirection">
+                        <f:selectItems itemLabel="Ogłoszenia zawierajace chociaż jedno z wpisanych słow" itemValue="or"/>
+                        <f:selectItem itemLabel="Ogłoszenia zawierajace wszystkie wpisane słowa" itemValue="and" />
+                        <f:selectItem itemLabel="Ogłoszenia zawierajace chociaż jedno z wpisanych słow" itemValue="or"/>
+                        <f:selectItem itemLabel="Wszystkie ogłoszenia które nie zawierają wpisanych słów" itemValue="not" />
+                    </p:selectOneRadio>
+                    <p:commandButton value="Szukaj" ajax="false" icon="ui-icon-extlink" action="#{adController.search}" resetValues="true"/>
+                </h:form>
+
+                <c:if test="${not empty sessionScope.login}">
+                    <c:if test="${sessionScope.login == 'admin'}">
+                        <h:form>
+                            <p:separator/>
+                            <h:outputText>Moderacja</h:outputText>
+                            <c:forEach var="ad" items="${modAd}">
+                                <p>    
+                                    <p> <a href="mod.xhtml?modADid=${ad.id}"><font color="red">${ad.title}</font></a></p>
+                                </p>
+                            </c:forEach>
+                        </h:form>
+                    </c:if>
+                </c:if>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <ui:insert name="content">Put default content here, if any.</ui:insert>
+            </p:layoutUnit>
+
+        </p:layout>
+    </h:body>
+</html>

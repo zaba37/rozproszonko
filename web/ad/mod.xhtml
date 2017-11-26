@@ -1,0 +1,32 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+        <msgs> #{msgs.moderacjaHeader} </msgs>
+    </ui:define>
+    <ui:define name="content">
+        <h:form enctype="multipart/form-data">
+            <p:panel header="#{msgs.moderacjaHeader}">
+                <p:messages />
+                <f:metadata>
+                    <f:event type="preRenderView" listener="#{adminMSGController.loadModAd()}"/>
+                </f:metadata>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:inputText value="#{adminMSGController.modaAdId}" required="true" rendered="false"/>
+
+                    <h:outputText value="#{msgs.tytile} " />
+                    <p:inputText value="#{adminMSGController.title}" required="true"/>
+
+                    <h:outputText value="#{msgs.desc}" />
+                    <p:inputTextarea rows="10" cols="50" value="#{adminMSGController.dsc}" queryDelay="750" minQueryLength="4" required="true"/>
+                </h:panelGrid>
+
+                <p:commandButton value="#{msgs.zatwierdz}" ajax="false" icon="ui-icon-check" validateClient="true" action="#{adminMSGController.saveAdAfterMod}" resetValues="true"  />                   
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

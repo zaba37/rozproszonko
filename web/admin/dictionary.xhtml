@@ -1,0 +1,36 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="title">
+        Słownik  
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:panel header="Słownik">
+                <h1><msgs key='slownikH'/></h1>
+                <p:inputText value="#{adminMSGController.word}"/>
+                <p:commandButton value="Dodaj" ajax="false" icon="ui-icon-check" validateClient="true" action="#{adminMSGController.addWord}" resetValues="true"  />                   
+
+                <h1>Słownik</h1> 
+                <table border="1px" cellpadding="10">
+                    <c:forEach var="word" items="${dictionary}">
+                        <tr>
+                            <td>${word.word}</td>
+                            <td>
+<!--                                <a href="deleteWord?${word.id}"> <fmt:message key='remove'/> </a>-->
+                                <p:button value="Usun" outcome="/admin/successDeleteFromDictionary">
+                                    <f:param name="deleteWord" value="#{word.id}"/>
+                                </p:button> 
+                            </td>
+                        </tr>                
+                    </c:forEach>
+                </table>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

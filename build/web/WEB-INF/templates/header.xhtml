@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <h:form>
+        <p:growl id="messages"/>
+
+        <p:menubar>
+            <p:submenu label="Ogłoszenia" icon="ui-icon-cart">
+                <p:menuitem value="Wszystkie ogłoszenia" outcome="/ad/showAllAd" />
+                <c:if test="${not empty sessionScope.login}">
+                    <c:if test="${sessionScope.login != 'admin'}">
+                        <p:menuitem value="Twoje ogłoszenia" outcome="/ad/showOwnAd" />
+                        <p:menuitem value="Dodaj nowe ogłoszenie" outcome="/ad/createNewAd" />
+                    </c:if>
+                </c:if>
+            </p:submenu>
+
+            <p:submenu label="Help" icon="ui-icon-help">
+                <p:menuitem value="FAQ" url="#" />
+                <p:menuitem value="Statute" url="#" />
+                <p:menuitem value="Contact" url="#" />
+                <p:menuitem value="Complaint" url="#" />
+                <p:separator />
+                <p:menuitem value="About" url="#" />
+            </p:submenu>
+
+            <p:menuitem value="Strona główna" icon="ui-icon-home" outcome="/index" />
+
+            <c:if test="${not empty sessionScope.login}">
+                <c:if test="${sessionScope.login != 'admin'}">
+                    <p:submenu label="Profil" icon="ui-icon-person">
+                        <p:menuitem value="Edytuj dane" outcome="/login/profil" />
+                    </p:submenu>      
+                </c:if>
+            </c:if>
+
+            <c:if test="${not empty sessionScope.login}">
+                <c:if test="${sessionScope.login == 'admin'}">
+                    <p:submenu label="Opcje admina" icon="ui-icon-person">
+                        <p:menuitem value="Użytkownicy" outcome="/admin/showAllUsers" />
+                        <p:menuitem value="Dodaj nową wiadomość" outcome="/admin/createAdminMSG" />
+                        <p:menuitem value="Słownik" outcome="/admin/dictionary" />
+                    </p:submenu>      
+                </c:if>
+            </c:if>
+
+
+            <f:facet name="options">
+
+
+                <c:if test="${empty sessionScope.login}">
+                    <p:button value="#{msgs.login}" icon="ui-icon-unlocked" outcome="/login/login"/>
+                    <p:button value="Sign Up" icon="ui-icon-plus" outcome="/newUser/createUser"/>
+                </c:if>
+
+                <c:if test="${not empty sessionScope.login}">
+                    <p:commandButton value="Logout" ajax="false" icon="ui-icon-extlink" action="#{loginController.logout}" resetValues="true"/>
+                </c:if> 
+            </f:facet>
+        </p:menubar>      
+    </h:form>
+
+</ui:composition>

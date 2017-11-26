@@ -1,0 +1,46 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="title">
+        Detail Ad
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:panel header="Chosen auction">
+                <h:panelGrid columns="2" >
+                    <f:metadata>
+                        <f:viewParam name="auctinId" value="#{adController.id}" />
+                        <f:event type="preRenderView" listener="#{adController.loadChosenAd}"/>
+                    </f:metadata>
+
+                    <h:outputText value="Title: " style="font-weight: bold"> </h:outputText>
+                    <h:outputText value="#{adController.chosenAd.title}"></h:outputText>
+                    <h:outputText value="Description: " style="font-weight: bold"> </h:outputText>
+                    <h:outputText value="#{adController.chosenAd.descryption}"></h:outputText>
+                    <h:outputText value="Kontakt: " style="font-weight: bold"> </h:outputText>
+                    <h:outputText value="#{adController.chosenAd.owner.email}"></h:outputText>
+
+                    <c:if test="${not empty sessionScope.login}">
+                        <p:commandButton value="Zgłoś do moderacji" rendered="#{!adController.render}" ajax="false" icon="ui-icon-check" validateClient="true" action="#{adController.toModeration()}" resetValues="true"  />                   
+                    </c:if>
+                    <h:outputText value="Ogłoszenie zgłoszone do moderacji!" rendered="#{adController.render}"></h:outputText>
+                </h:panelGrid>
+            </p:panel>
+            <h3>Graphic</h3>
+            <p:graphicImage value="#{adController.filePath}"  />
+<!--            <img src="#{adController.filePath}"> </img>-->
+
+            <audio controls="true"> 
+                <source src="#{adController.filePath}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </source>
+            </audio>
+        </h:form>
+    </ui:define>
+</ui:composition> 
+
